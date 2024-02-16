@@ -3,3 +3,137 @@ opencv-python
 mediapipe
 
 https://www.youtube.com/watch?v=01sAkU_NvOY
+
+
+Consuming APIs with Python
+--------------------------
+
+Installing json and requests
+We will need these libs to consume an API. You can install by using these commands:
+
+- pip install requests
+And after:
+
+- pip install json
+
+
+
+GET
+Get a specific resource:
+
+def get_something():
+    response = requests.get("https://jsonplaceholder.typicode.com/todos/1")
+    print("get something: ")
+    print("status code response: ", response.status_code)
+    print("content response: ", response.content)
+    all_fields = json.loads(response.content)
+    print(all_fields)
+    print(response.json)
+
+The result of the method print calls is something like this:
+
+get something:
+status code response:  200
+content response:  b'{\n  "userId": 1,\n  "id": 1,\n  "title": "delectus aut autem",\n  "completed": false\n}'
+{'userId': 1, 'id': 1, 'title': 'delectus aut autem', 'completed': False}
+The difference is the use of the method json.loads(). This method convert to a Python dictionary.
+
+Get all resources:
+
+def get_all():
+    request = requests.get("https://jsonplaceholder.typicode.com/todos")
+    print("get all: ")
+    print("status code response: ", request.status_code)
+    print("content response: ", request.content)
+    all_fields = json.loads(request.content)
+    print(all_fields)
+Respone:
+
+get all:
+status code response:  200
+content response:  b'[\n  {\n    "userId": 1,\n  "id": 1,\n //...  ]
+I omitted the complete response.
+
+DELETE
+def delete_something():
+    request = requests.delete("https://jsonplaceholder.typicode.com/todos/1")
+    print("delete something: ")
+    print(request.status_code)
+Response:
+
+delete something:
+status code response:  200
+POST
+def post_something():
+    json = {
+        'title':'foo',
+        'body': 'test',
+        'userId': 1
+    }
+    request = requests.post("https://jsonplaceholder.typicode.com/todos", json)
+    print("post something: ")
+    print("status code response: ", request.status_code)
+    print("content response: ", request.content)
+Response:
+
+post something:
+status code response:  201
+content response:  b'{\n  "title": "foo",\n  "body": "test",\n  "userId": "1",\n  "id": 201\n}'
+PUT
+def update_something():
+    json = {
+        'title':'foo',
+        'body': 'test 2',
+        'userId': 1
+    }
+    request = requests.put("https://jsonplaceholder.typicode.com/todos/1", json)
+    print("update something: ")
+    print("status code response: ", request.status_code)
+    print("content response: ", request.content)
+Response:
+
+update something:
+status code response:  200
+content response:  b'{\n  "title": "foo",\n  "body": "test 2",\n  "userId": "1",\n  "id": 1\n}'
+PATCH
+json = {
+    'title':'foo',
+    'body': 'test 2',
+}
+request = requests.patch("https://jsonplaceholder.typicode.com/todos/1", json)
+print("patching something: ")
+print("status code response: ", request.status_code)
+print("content response: ", request.content)
+Response:
+
+patching something:
+status code response:  200
+content response:  b'{\n  "userId": 1,\n  "id": 1,\n  "title": "foo",\n  "completed": false,\n  "body": "test 2"\n}'
+And nested resources?
+
+def nested_resource():
+    request = requests.get("https://jsonplaceholder.typicode.com/todos/1/comments")
+    print("nested resource: ")
+    print("status code response: ", request.status_code)
+    print("content response: ", request.content)
+    all_fields = json.loads(request.content)
+    print(all_fields)
+Response:
+
+nested resource:
+status code response:  200
+content response:  b'[\n  {\n    "postId": 1,\n    "id": 1,\n    "name": "id labore ex et quam laborum",\n    "email": "Eliseo@gardner.biz",\n    "body": "laudantium enim quasi est quidem magnam voluptate ipsam //.. ]
+Filter
+def filter_something():
+    request = requests.get("https://jsonplaceholder.typicode.com/posts?userId=1")
+    print("filter something: ")
+    print("status code response: ", request.status_code)
+    print("content response: ", request.content)
+    all_fields = json.loads(request.content)
+    print(all_fields)
+And the response is:
+
+filter something:
+status code response:  200
+content response:  b'[\n  {\n    "userId": 1,\n    "id": 1,\n    "title": "sunt aut facere repellat provident occaecati excepturi optio reprehenderit",\n    "body": "quia et suscipit\\nsuscipit recusandae consequuntur //.. ]
+That’s it for today.
