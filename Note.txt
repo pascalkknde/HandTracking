@@ -1,0 +1,5 @@
+1. Go to file->settings-Project: Name->Python Interpreter and add those packages
+opencv-python
+mediapipe
+
+https://www.youtube.com/watch?v=01sAkU_NvOY
